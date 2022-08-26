@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 
 const Context = createContext();
@@ -7,7 +7,7 @@ export const useStateContext = () => useContext(Context); //Me permite usar el e
 
 const StateContext = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
-  const [cartItems, setcartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [qty, setQty] = useState(1);
@@ -32,10 +32,10 @@ const StateContext = ({ children }) => {
         }
       });
 
-      setcartItems(updatedCartItems);
+      setCartItems(updatedCartItems);
     } else {
       product.quantity = quantity;
-      setcartItems([...cartItems, { ...product }]);
+      setCartItems([...cartItems, { ...product }]);
     }
     toast.success(`${qty} ${product.name} added to the cart.`);
   };
@@ -51,7 +51,7 @@ const StateContext = ({ children }) => {
     setTotalQuantities(
       (prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity
     );
-    setcartItems(newCartItems);
+    setCartItems(newCartItems);
   };
 
   const toggleCartItemQuantity = (id, value) => {
@@ -64,7 +64,7 @@ const StateContext = ({ children }) => {
         ...newCartItems,
         { ...foundProduct, quantity: foundProduct.quantity + 1 },
       ];
-      setcartItems(newCartItems_);
+      setCartItems(newCartItems_);
       setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
       setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
     } else if (value === "desc") {
@@ -73,7 +73,7 @@ const StateContext = ({ children }) => {
           ...newCartItems,
           { ...foundProduct, quantity: foundProduct.quantity - 1 },
         ];
-        setcartItems(newCartItems_);
+        setCartItems(newCartItems_);
         setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
         setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1);
       }
@@ -109,6 +109,9 @@ const StateContext = ({ children }) => {
         onAdd,
         toggleCartItemQuantity,
         onRemove,
+        setCartItems,
+        setTotalPrice,
+        setTotalQuantities,
       }}
     >
       {children}
